@@ -100,8 +100,12 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 {
    hInst = hInstance; // 인스턴스 핸들을 전역 변수에 저장합니다.
 
+   // 윈도우 인스턴스 핸들
    HWND hWnd = CreateWindowW(szWindowClass, szTitle, WS_OVERLAPPEDWINDOW,   // 클래스 이름, 창 제목 텍스트, 윈도우 종류, 시작 위치xy, 해상도xy
       CW_USEDEFAULT, 0, 1600, 900, nullptr, nullptr, hInstance, nullptr);   
+
+   HWND hWnd1 = CreateWindowW(szWindowClass, szTitle, WS_OVERLAPPEDWINDOW,   
+       CW_USEDEFAULT, 0, 1600, 900, nullptr, nullptr, hInstance, nullptr);
 
    if (!hWnd)   // 윈도우 객체 이상 있을 시 리턴
    {
@@ -149,7 +153,45 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
     case WM_PAINT:
         {
             PAINTSTRUCT ps;
+            //DC 객체
             HDC hdc = BeginPaint(hWnd, &ps);
+            // 브러쉬 객체 
+            HBRUSH brush = CreateSolidBrush(RGB(255, 0, 255));
+            // SelectObject : 객체에 brush 적용, 적용 이전 사용하던 브러쉬 객체 리턴 가능
+            HBRUSH oldBrush = (HBRUSH)SelectObject(hdc, brush);
+            
+            // 사각형 그리기
+            Rectangle(hdc, 100, 100, 200, 200);
+
+            // 객체에 Brush 적용
+            SelectObject(hdc, oldBrush);
+            // 브러쉬 다 썼으면 객체 삭제. 메세지 함수가 계속 반복되기 때문에 Brush 객체 적용 함수가 힙에 계속 남아있음
+            DeleteObject(brush);
+
+            // 선 객체 생성 및 적용
+            HPEN redPen = CreatePen(PS_SOLID, 2, RGB(255, 0, 0));
+            HPEN OldPen = (HPEN)SelectObject(hdc, redPen);
+
+            // 원 그리기
+            Ellipse(hdc, 200, 200, 300, 300);
+            
+            // 다 썼다면 삭제
+            SelectObject(hdc, OldPen);
+            DeleteObject(redPen);
+
+            HBRUSH grayBrush = (HBRUSH)GetStockObject(GRAY_BRUSH);
+            oldBrush = (HBRUSH)SelectObject(hdc, grayBrush);
+            Rectangle(hdc, 400, 400, 500, 500);
+            DeleteObject(grayBrush);
+
+
+            // DC : 화면 출력에 필요한 모든 정보를 가지는 데이터 구조체
+            // GDI 모듈에 의해서 관리됨
+            // 어떤 폰트? 어떤 선의 굵기? 어떤 색상으로 그려줌?
+            // 화면 출력에 필요한 모든 경우는 WINAPI에서는 DC를 통해서 작업을 진행
+            //
+            //
+
             // TODO: 여기에 hdc를 사용하는 그리기 코드를 추가합니다...
             EndPaint(hWnd, &ps);
         }
