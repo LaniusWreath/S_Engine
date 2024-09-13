@@ -153,36 +153,67 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
     case WM_PAINT:
         {
             PAINTSTRUCT ps;
-            //DC 객체
+            //DC 객체 : GDI 모아놓은 클래스
             HDC hdc = BeginPaint(hWnd, &ps);
-            // 브러쉬 객체 
-            HBRUSH brush = CreateSolidBrush(RGB(255, 0, 255));
+
+            // 브러쉬 객체 생성 및 색 정하기
+            HBRUSH brush = CreateSolidBrush(RGB(255, 0, 255));  // RGB 매크로 사용 색 정하기
+            HBRUSH grayBrush = (HBRUSH)GetStockObject(GRAY_BRUSH);  // 스톡오브젝트에서 색 불러오기 (검정, 흰색, 투명밖에 없음)
+            HBRUSH patternBrush = CreateHatchBrush(HS_DIAGCROSS, RGB(0, 255, 255));   // 무늬 브러쉬
+            HBRUSH oldBrush; // 원래 쓰던 브러쉬 저장해둘 브러쉬
+
             // SelectObject : 객체에 brush 적용, 적용 이전 사용하던 브러쉬 객체 리턴 가능
-            HBRUSH oldBrush = (HBRUSH)SelectObject(hdc, brush);
+            oldBrush = (HBRUSH)SelectObject(hdc, brush);
             
             // 사각형 그리기
             Rectangle(hdc, 100, 100, 200, 200);
 
-            // 객체에 Brush 적용
+            // dc 객체 Brush 원래대로 돌려놓기 -> dc에 할당되어있는 브러쉬는 삭제 못하기 때문
             SelectObject(hdc, oldBrush);
-            // 브러쉬 다 썼으면 객체 삭제. 메세지 함수가 계속 반복되기 때문에 Brush 객체 적용 함수가 힙에 계속 남아있음
+            // 브러쉬 다 썼으면 메모리 해제. 메세지 함수가 계속 반복되기 때문에 Brush 객체 적용 함수가 힙에 계속 남아있음
             DeleteObject(brush);
 
             // 선 객체 생성 및 적용
+            HPEN translucentPen = CreatePen(PS_DASHDOT, 1, DKGRAY_BRUSH);
             HPEN redPen = CreatePen(PS_SOLID, 2, RGB(255, 0, 0));
-            HPEN OldPen = (HPEN)SelectObject(hdc, redPen);
-
+            HPEN oldPen = (HPEN)SelectObject(hdc, redPen);
+            
             // 원 그리기
             Ellipse(hdc, 200, 200, 300, 300);
             
-            // 다 썼다면 삭제
-            SelectObject(hdc, OldPen);
+            // 다 썼다면 메모리 해제
+            SelectObject(hdc, oldPen);
             DeleteObject(redPen);
 
-            HBRUSH grayBrush = (HBRUSH)GetStockObject(GRAY_BRUSH);
             oldBrush = (HBRUSH)SelectObject(hdc, grayBrush);
-            Rectangle(hdc, 400, 400, 500, 500);
+            Rectangle(hdc, 10, 10, 800, 600);
+            SelectObject(hdc, oldBrush);
             DeleteObject(grayBrush);
+
+            // ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ패턴, 펜 브러쉬로 도형쓰기 종합ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
+            
+            PAINTSTRUCT ps1;
+            HDC dc1;
+            HBRUSH patternBrush1;
+            HPEN pen1;
+            HBRUSH oldBrush1;
+            HPEN oldPen1;
+
+
+            dc1 = BeginPaint(hWnd, &ps);
+            patternBrush1 = CreateHatchBrush( 0,RGB(255, 0, 0));
+            oldBrush1 = (HBRUSH)SelectObject(hdc, patternBrush1);
+            pen1 = CreatePen(0, 0, RGB(0, 0, 255));
+            oldPen1 = (HPEN)SelectObject(hdc, pen1);
+
+            Rectangle(hdc, 0, 0, 900, 700);
+            
+            SelectObject(hdc, oldBrush1);
+            SelectObject(hdc, oldPen1);
+
+            DeleteObject(patternBrush1);
+            DeleteObject(pen1);
+            // 
 
 
             // DC : 화면 출력에 필요한 모든 정보를 가지는 데이터 구조체
@@ -190,7 +221,13 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
             // 어떤 폰트? 어떤 선의 굵기? 어떤 색상으로 그려줌?
             // 화면 출력에 필요한 모든 경우는 WINAPI에서는 DC를 통해서 작업을 진행
             //
-            //
+            // 순서 : 
+            // 1. paint dc 객체 생성
+            // 2. brush 객체 생성 (스톡오브젝트에서 불러다 써도 됨)
+            // 3. 새 브러쉬 dc에 적용 및 기존 브러쉬 저장
+            // 4. 그리기 
+            // 5. dc 기존 브러쉬로 되돌리기
+            // 6. 새 브러쉬 객체 삭제
 
             // TODO: 여기에 hdc를 사용하는 그리기 코드를 추가합니다...
             EndPaint(hWnd, &ps);
