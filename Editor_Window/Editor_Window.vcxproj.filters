@@ -27,6 +27,6 @@
     </Image>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="main.cpp" />
+    <ClCompile Include="main1.cpp" />
   </ItemGroup>
 </Project>

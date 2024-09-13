@@ -134,7 +134,7 @@
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="main.cpp" />
+    <ClCompile Include="main1.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Editor_Window.rc" />
