@@ -5,6 +5,12 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="리소스 파일\header">
+      <UniqueIdentifier>{b3d7943e-2905-4f56-814c-dc5df70f010a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="리소스 파일\cpp">
+      <UniqueIdentifier>{872a1129-ab8c-460f-a7e9-85ab7c2f1d42}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Editor_Window.h" />
@@ -12,6 +18,15 @@
     <ClInclude Include="Resource.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="CommonInclude.h" />
+    <ClInclude Include="SystemClass.h">
+      <Filter>리소스 파일\header</Filter>
+    </ClInclude>
+    <ClInclude Include="InputClass.h">
+      <Filter>리소스 파일\header</Filter>
+    </ClInclude>
+    <ClInclude Include="ApplicationClass.h">
+      <Filter>리소스 파일\header</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Editor_Window.rc">
@@ -28,5 +43,14 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main1.cpp" />
+    <ClCompile Include="SystemClass.cpp">
+      <Filter>리소스 파일\cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="InputClass.cpp">
+      <Filter>리소스 파일\cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="ApplicationClass.cpp">
+      <Filter>리소스 파일\cpp</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

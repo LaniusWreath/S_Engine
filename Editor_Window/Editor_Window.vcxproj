@@ -70,6 +70,14 @@
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <IncludePath>C:\Users\tls68\OneDrive\Desktop\WAPI\Include;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\Users\tls68\OneDrive\Desktop\WAPI\Libs\x64\Debug;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <IncludePath>C:\Users\tls68\OneDrive\Desktop\WAPI\Include$(SolutionDir);$(IncludePath)</IncludePath>
+    <LibraryPath>C:\Users\tls68\OneDrive\Desktop\WAPI\Libs\x64\Release;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
@@ -118,23 +126,31 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>d3d11.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="CommonInclude.h" />
     <ClInclude Include="Editor_Window.h" />
     <ClInclude Include="framework.h" />
+    <ClInclude Include="ApplicationClass.h" />
+    <ClInclude Include="InputClass.h" />
     <ClInclude Include="Resource.h" />
+    <ClInclude Include="SystemClass.h" />
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="ApplicationClass.cpp" />
+    <ClCompile Include="InputClass.cpp" />
     <ClCompile Include="main1.cpp" />
+    <ClCompile Include="SystemClass.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Editor_Window.rc" />
